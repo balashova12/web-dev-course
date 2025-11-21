@@ -78,13 +78,31 @@ body {
 
 /* ===== Адаптивность ===== */
 @media (max-width: 600px) {
-    .header {
-        flex-wrap: wrap;
-        gap: 10px;
+
+    .logo {
+        width: 45px;
+        height: 45px;
+        font-size: 16px;
+        margin-bottom: 10px;
     }
-    
-    .menu {
-        width: 100%;
+
+    .header {
+        flex-direction: column;
+        padding: 10px;
+        gap: 10px;
         text-align: center;
     }
+
+    .menu {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .menu a {
+        font-size: 14px;
+        padding: 4px 8px;
+    }
 }
+
