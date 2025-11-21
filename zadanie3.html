@@ -4,14 +4,14 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Задание 2</title>
-<link rel="stylesheet" href="/src/css/styles.css" />
+<link rel="stylesheet" href="src/css/styles.css" />
 </head>
 
 <body>
 
 <div id="header"></div>
 <script>
-    fetch("/components/header.html")
+    fetch("components/header.html")
         .then(res => res.text())
         .then(data => document.getElementById("header").innerHTML = data);
 </script>
@@ -23,7 +23,7 @@
 
 <div id="footer"></div>
 <script>
-    fetch("/components/footer.html")
+    fetch("components/footer.html")
         .then(res => res.text())
         .then(data => document.getElementById("footer").innerHTML = data);
 </script>

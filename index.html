@@ -4,14 +4,14 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>IT Блог — Главная</title>
-<link rel="stylesheet" href="/src/css/styles.css" />
+<link rel="stylesheet" href="src/css/styles.css" />
 </head>
 
 <body>
 
 <div id="header"></div>
 <script>
-    fetch("/components/header.html")
+    fetch("components/header.html")
         .then(res => res.text())
         .then(data => document.getElementById("header").innerHTML = data);
 </script>
@@ -46,10 +46,10 @@
 <section class="gallery">
 <h2>Мир технологий в изображениях</h2>
 <div class="images">
-<img src="/src/images/вебРазработка.jpg" alt="Tech Image 1" />
-<img src="/src/images/прога.jpg" alt="Tech Image 2" />
-<img src="/src/images/робот.jpg" alt="Tech Image 3" />
-<img src="/src/images/сервер.jpg" alt="Tech Image 4" />
+<img src="src/images/вебРазработка.jpg" alt="Tech Image 1" />
+<img src="src/images/прога.jpg" alt="Tech Image 2" />
+<img src="src/images/робот.jpg" alt="Tech Image 3" />
+<img src="src/images/сервер.jpg" alt="Tech Image 4" />
 </div>
 </section>
 </main>
@@ -57,7 +57,7 @@
 
 <div id="footer"></div>
 <script>
-    fetch("/components/footer.html")
+    fetch("components/footer.html")
         .then(res => res.text())
         .then(data => document.getElementById("footer").innerHTML = data);
 </script>
