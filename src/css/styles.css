@@ -1,0 +1,90 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+/* ====== Базовые стили ====== */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f4f7;
+    color: #222;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    padding: 15px 25px;
+    background: #0d1117;
+}
+
+.logo {
+    width: 60px;
+    height: 60px;
+    background: #0d1117;
+    border: 3px solid #00aaff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    color: #00aaff;
+    font-size: 22px;
+    box-shadow: 0 0 12px rgba(0,170,255,0.5);
+    user-select: none;
+}
+
+.menu a {
+    margin-left: 20px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.menu a:hover { 
+    color: #00aaff; 
+}
+
+.content {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+}
+
+.gallery img {
+    width: 300px;
+    height: 200px;      
+    object-fit: cover;  
+    border-radius: 10px;
+}
+
+.footer {
+    background: #0d1117;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    margin-top: 40px;
+}
+
+/* ===== Адаптивность ===== */
+@media (max-width: 600px) {
+    .header {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .menu {
+        width: 100%;
+        text-align: center;
+    }
+}

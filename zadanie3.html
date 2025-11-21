@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Задание 2</title>
+<link rel="stylesheet" href="/src/css/styles.css" />
+</head>
+
+<body>
+
+<div id="header"></div>
+<script>
+    fetch("/components/header.html")
+        .then(res => res.text())
+        .then(data => document.getElementById("header").innerHTML = data);
+</script>
+
+<main class="content">
+<h1>Задание 3</h1>
+<p>Здесь будет выполненное задание №3.</p>
+</main>
+
+<div id="footer"></div>
+<script>
+    fetch("/components/footer.html")
+        .then(res => res.text())
+        .then(data => document.getElementById("footer").innerHTML = data);
+</script>
+
+</body>
+</html>
