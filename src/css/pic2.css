@@ -1,0 +1,97 @@
+.picture {
+    width: 200px;
+    height: 200px;
+    background: linear-gradient(to right, #f9f7d6 0%, #c5ddff 60%, #9bbdf7 100%);
+    position: relative;
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 20px 0;
+}
+
+/* Солнце */
+.picture::before {
+    content: "";
+    position: absolute;
+    width: 45px;
+    height: 45px;
+    background: #fceca4;
+    border-radius: 50%;
+    top: -10px;
+    left: -10px;
+}
+
+/* Арки */
+.arc {
+    position: absolute;
+    width: 54px;
+    height: 140px;
+    border: 7px solid #9da0a6;
+    border-bottom: none;
+    border-radius: 80% 80% 0 0;
+    bottom: 0;
+}
+
+/* 3 арки */
+.arc1 { left: 0; }
+.arc2 { left: 67px; }
+.arc3 { left: 133px; }
+
+/* Лодка */
+.boat {
+    position: absolute;
+    bottom: 40px;
+    left: 60px;
+    width: 80px;
+    height: 40px;
+    background: #8b5a2b;
+    clip-path: polygon(0 0, 100% 0, 80% 100%, 20% 100%);
+}
+
+/* Мачта */
+.mast {
+    position: absolute;
+    bottom: 80px;
+    left: 95px;
+    width: 6px;
+    height: 60px;
+    background: #754c24;
+}
+
+/* Флаг */
+.flag {
+    position: absolute;
+    bottom: 137px;
+    left: 95px;
+    width: 18px;
+    height: 12px;
+    background: #dc2f2f;
+    clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+/* Парус */
+.sail {
+    position: absolute;
+    bottom: 80px;
+    left: 100px;
+    width: 30px;
+    height: 60px;
+    background: #8ae3f0;
+    clip-path: polygon(0 0, 100% 50%, 0 100%);
+    opacity: 0.9;
+}
+
+/* Волны */
+.wave {
+    position: absolute;
+    bottom: -10px;
+    width: 80px;
+    height: 60px;
+    background: radial-gradient(circle at 50% 40%, #cde1ff, #80a8ff 70%);
+    border-radius: 50%;
+    opacity: 0.9;
+}
+
+.wave1 { left: -5px; }
+.wave2 { left: 50px; bottom: -5px; }
+.wave3 { left: 100px; }
+.wave4 { left: 140px; bottom: -10px; }
