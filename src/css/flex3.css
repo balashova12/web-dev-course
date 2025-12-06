@@ -1,0 +1,64 @@
+.flex-adv {
+    width: 400px;
+    height: 400px;
+    background: #f2f2f2;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s;
+}
+
+.flex-adv .car {
+    position: absolute;
+    width: 300px;
+    transition: 0.4s;
+    opacity: 0;
+}
+
+.flex-adv .static {
+    opacity: 1;
+}
+
+.flex-adv:hover .static {
+    opacity: 0;
+}
+.flex-adv:hover .hover {
+    opacity: 1;
+    transform: translateX(20px); 
+}
+.flex-adv:hover .text {
+    opacity: 1;
+}
+
+.flex-adv .text {
+    position: absolute;
+    bottom: 5px;
+    font-size: 14px;
+    opacity: 0;
+    transition: 0.3s;
+}
+
+.flex-adv:active .hover,
+.flex-adv:active .static {
+    opacity: 0;
+}
+
+.flex-adv:active .active {
+    opacity: 1;
+    animation: shake 0.4s infinite;
+}
+
+.flex-adv:active {
+    transform: scale(1.05);
+}
+
+@keyframes shake {
+    0% { transform: rotate(0deg) translate(2px); }
+    25% { transform: rotate(3deg) translate(-2px); }
+    50% { transform: rotate(0deg) translate(2px); }
+    75% { transform: rotate(-3deg) translate(-2px); }
+    100% { transform: rotate(0deg) translate(2px); }
+}
