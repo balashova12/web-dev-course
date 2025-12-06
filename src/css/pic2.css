@@ -8,7 +8,6 @@
     margin: 20px 0;
 }
 
-/* Солнце */
 .picture::before {
     content: "";
     position: absolute;
@@ -20,7 +19,6 @@
     left: -10px;
 }
 
-/* Арки */
 .arc {
     position: absolute;
     width: 54px;
@@ -31,12 +29,10 @@
     bottom: 0;
 }
 
-/* 3 арки */
 .arc1 { left: 0; }
 .arc2 { left: 67px; }
 .arc3 { left: 133px; }
 
-/* Лодка */
 .boat {
     position: absolute;
     bottom: 40px;
@@ -47,7 +43,6 @@
     clip-path: polygon(0 0, 100% 0, 80% 100%, 20% 100%);
 }
 
-/* Мачта */
 .mast {
     position: absolute;
     bottom: 80px;
@@ -57,7 +52,6 @@
     background: #754c24;
 }
 
-/* Флаг */
 .flag {
     position: absolute;
     bottom: 137px;
@@ -68,7 +62,6 @@
     clip-path: polygon(0 0, 100% 50%, 0 100%);
 }
 
-/* Парус */
 .sail {
     position: absolute;
     bottom: 80px;
@@ -80,7 +73,6 @@
     opacity: 0.9;
 }
 
-/* Волны */
 .wave {
     position: absolute;
     bottom: -10px;
