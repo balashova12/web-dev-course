@@ -41,20 +41,49 @@ body {
     border-radius: 6px;
 }
 
-.logo {
-    width: 60px;
-    height: 60px;
+.logo-chip {
+    width: 32px;
+    height: 32px;
     background: #0d1117;
-    border: 3px solid #00aaff;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: bold;
-    color: #00aaff;
-    font-size: 22px;
-    box-shadow: 0 0 12px rgba(0,170,255,0.5);
-    user-select: none;
+    border: 2px solid #00aaff;
+    border-radius: 5px;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.logo-chip::before {
+    content: "";
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    width: 12px;
+    height: 12px;
+    border: 2px solid #00aaff;
+    border-radius: 3px;
+    box-sizing: border-box;
+}
+
+.logo-chip::after {
+    content: "";
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #00aaff;
+
+    top: -4px;
+    left: 8px;
+
+    box-shadow:
+        8px 0 #00aaff,
+
+        0 32px #00aaff,
+        8px 32px #00aaff,
+
+        -8px 8px #00aaff,
+        -8px 16px #00aaff,
+
+        22px 8px #00aaff,
+        22px 16px #00aaff;
 }
 
 .menu a {
@@ -90,14 +119,6 @@ body {
 }
 
 @media (max-width: 600px) {
-
-    .logo {
-        width: 45px;
-        height: 45px;
-        font-size: 16px;
-        margin-bottom: 10px;
-    }
-
     .header {
         flex-direction: column;
         padding: 10px;

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Задание 5</title>
+<link rel="stylesheet" href="src/css/styles.css" />
+<link rel="stylesheet" href="src/css/zadanie5.css" />
+</head>
+
+<body>
+
+<div id="header"></div>
+<script>
+    fetch("components/header.html")
+        .then(res => res.text())
+        .then(data => document.getElementById("header").innerHTML = data);
+</script>
+
+<main class="content">
+  <h1>Задание 5 — Собрать домик (Вариант 1)</h1>
+  <p class="hint">
+    Перетаскивай фигуры мышью. Двойной клик по фигуре — поворот на 90°.
+    Нажми «Готово», чтобы собрать домик идеально. «Сбросить» — вернёт россыпь.
+  </p>
+
+  <div class="game">
+    <div class="controls">
+      <button id="resetBtn" type="button">Сбросить</button>
+      <button id="doneBtn" type="button">Готово</button>
+    </div>
+
+    <div class="stage" id="stage" aria-label="Поле игры">
+      <div class="piece roof" data-piece="roof"></div>
+      <div class="piece house" data-piece="house"></div>
+      <div class="piece chimney" data-piece="chimney"></div>
+      <div class="piece window" data-piece="window"></div>
+      <div class="piece door" data-piece="door"></div>
+
+      <div class="success" id="successMsg">Домик собран!</div>
+    </div>
+  </div>
+</main>
+
+
+<div id="footer"></div>
+<script>
+    fetch("components/footer.html")
+        .then(res => res.text())
+        .then(data => document.getElementById("footer").innerHTML = data);
+</script>
+
+<script src="src/js/zadanie5.js"></script>
+</body>
+</html>

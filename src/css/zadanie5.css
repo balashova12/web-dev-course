@@ -1,0 +1,130 @@
+.hint {
+  max-width: 900px;
+  margin: 8px 0 18px;
+  color: #444;
+}
+
+.game {
+  background: #fff;
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.controls button {
+  padding: 8px 12px;
+  border: 1px solid #cfcfcf;
+  background: #f6f6f6;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.stage {
+  width: min(700px, 100%);
+  height: 420px;
+  margin: 0 auto;
+  position: relative;
+  background: linear-gradient(#ffffff, #f4f7ff);
+  border: 2px dashed #c7d2fe;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.success {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 14px;
+  background: rgba(13,17,23,0.92);
+  color: #fff;
+  padding: 10px 12px;
+  border-radius: 10px;
+  text-align: center;
+  transform: translateY(140%);
+  transition: transform .35s;
+}
+
+.stage.is-complete .success {
+  transform: translateY(0);
+}
+
+.stage.is-complete {
+  animation: winPulse 0.9s ease-in-out infinite alternate;
+}
+
+@keyframes winPulse {
+  from { transform: scale(1); }
+  to   { transform: scale(1.01); }
+}
+
+.piece {
+  position: absolute;
+  user-select: none;
+  touch-action: none;
+  cursor: grab;
+
+  transform: translate(-50%, -50%) rotate(var(--rot, 0deg));
+  transition: left .55s ease, top .55s ease, transform .55s ease, box-shadow .15s;
+
+  box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+}
+
+.piece:active {
+  cursor: grabbing;
+  box-shadow: 0 14px 30px rgba(0,0,0,0.18);
+}
+
+.piece.house { z-index: 1; }
+.piece.roof { z-index: 2; }
+.piece.chimney { z-index: 3; }
+.piece.window { z-index: 4; }
+.piece.door { z-index: 5; }
+
+.piece.house {
+  width: 170px;
+  height: 170px;
+  background: #ff6b6b;
+  border-radius: 16px;
+}
+
+.piece.roof {
+  width: 0;
+  height: 0;
+  border-left: 120px solid transparent;
+  border-right: 120px solid transparent;
+  border-bottom: 95px solid #8b5a2b;
+  box-shadow: none;
+  filter: drop-shadow(0 8px 12px rgba(0,0,0,0.14));
+}
+
+.piece.door {
+  width: 54px;
+  height: 88px;
+  background: #5b3a1a;
+  border-radius: 10px;
+}
+
+.piece.window {
+  width: 56px;
+  height: 56px;
+  background: #9de7f2;
+  border-radius: 12px;
+  outline: 3px solid rgba(13,17,23,0.12);
+}
+
+.piece.chimney {
+  width: 26px;
+  height: 78px;
+  background: #555;
+  border-radius: 8px;
+}
+
+@media (max-width: 600px) {
+  .stage { height: 360px; }
+}
