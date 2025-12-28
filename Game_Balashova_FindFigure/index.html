@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Find Figure — Заставка</title>
+  <link rel="stylesheet" href="./css/game.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo-chip"></div>
+        <div>
+          <div class="title">Find Figure</div>
+          <div class="subtitle">Найди фигуру — курсовая</div>
+        </div>
+      </div>
+      <a class="link" href="../index.html">← На сайт</a>
+    </header>
+
+    <main class="card">
+      <h1>Добро пожаловать!</h1>
+      <p class="muted">
+        Введи имя и начни игру. В игре 3 уровня с разной механикой: наведение, двойной клик, перетаскивание.
+      </p>
+
+      <div class="form">
+        <label class="label" for="name">Имя игрока</label>
+        <input id="name" class="input" type="text" maxlength="18" placeholder="Например: Александра" />
+        <button id="startBtn" class="btn primary" type="button">Начать</button>
+      </div>
+
+      <div class="split"></div>
+
+      <div class="quick">
+        <div class="row">
+          <div>
+            <div class="label">Быстрый старт уровня (для проверки)</div>
+            <div class="muted small">Можно начать сразу с 1/2/3 уровня.</div>
+          </div>
+          <div class="row">
+            <select id="levelSelect" class="select">
+              <option value="1">Уровень 1</option>
+              <option value="2">Уровень 2</option>
+              <option value="3">Уровень 3</option>
+            </select>
+            <button id="quickBtn" class="btn" type="button">Запустить</button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <div id="footer"></div>
+    <footer class="footer">
+        <p>© 2025 IT Blog.</p>
+    </footer>
+  </div>
+
+  <script type="module">
+    import { setPlayerName } from "./js/storage.js";
+
+    const nameInput = document.getElementById("name");
+    const startBtn = document.getElementById("startBtn");
+    const quickBtn = document.getElementById("quickBtn");
+    const levelSelect = document.getElementById("levelSelect");
+
+    function go(level) {
+      const name = nameInput.value.trim();
+      if (!name) {
+        nameInput.focus();
+        nameInput.classList.add("shake");
+        setTimeout(() => nameInput.classList.remove("shake"), 250);
+        return;
+      }
+      setPlayerName(name);
+      location.href = `./game.html?level=${level}`;
+    }
+
+    startBtn.addEventListener("click", () => go(1));
+    quickBtn.addEventListener("click", () => go(Number(levelSelect.value)));
+
+    nameInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") go(1);
+    });
+  </script>
+</body>
+</html>

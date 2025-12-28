@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Find Figure — Рейтинг</title>
+  <link rel="stylesheet" href="./css/game.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="chip"></div>
+        <div>
+          <div class="title">Find Figure</div>
+          <div class="subtitle">Результат и рейтинг</div>
+        </div>
+      </div>
+      <a class="link" href="../index.html">← На сайт</a>
+    </header>
+
+    <main class="card">
+      <h1>Финал</h1>
+      <div id="summary" class="summary"></div>
+
+      <div class="row" style="gap:10px; margin-top: 12px;">
+        <a class="btn primary" href="./index.html">Сыграть снова</a>
+        <a class="btn" href="./game.html?level=1">Начать с 1 уровня</a>
+      </div>
+
+      <div class="split"></div>
+
+      <h2>Рейтинг</h2>
+      <div class="muted small">Топ-10 сохранённых результатов (localStorage)</div>
+      <div id="tableWrap" class="tableWrap"></div>
+    </main>
+
+    <footer class="footer">
+      <span>© 2025 Find Figure</span>
+    </footer>
+  </div>
+
+  <script type="module">
+    import { getScores, getCurrentGame, clearCurrentGame } from "./js/storage.js";
+
+    const summary = document.getElementById("summary");
+    const tableWrap = document.getElementById("tableWrap");
+
+    const cur = getCurrentGame();
+    if (cur) {
+      summary.innerHTML = `
+        <div class="pill ${cur.passed ? "ok" : "bad"}">
+          ${cur.passed ? "Зачёт уровня: успешно" : "Зачёт уровня: не пройден"}
+        </div>
+        <div class="grid2">
+          <div><div class="label">Игрок</div><div class="value">${escapeHtml(cur.name)}</div></div>
+          <div><div class="label">Очки</div><div class="value">${cur.score}</div></div>
+          <div><div class="label">Достигнутый уровень</div><div class="value">${cur.level}</div></div>
+          <div><div class="label">Правильных ответов</div><div class="value">${cur.correct}/${cur.rounds}</div></div>
+        </div>
+      `;
+      clearCurrentGame();
+    } else {
+      summary.innerHTML = `<div class="muted">Нет свежего результата. Запусти игру.</div>`;
+    }
+
+    const scores = getScores().slice(0, 10);
+    if (!scores.length) {
+      tableWrap.innerHTML = `<div class="muted">Пока нет результатов.</div>`;
+    } else {
+      const rows = scores.map((s, i) => `
+        <tr>
+          <td>${i + 1}</td>
+          <td>${escapeHtml(s.name)}</td>
+          <td>${s.score}</td>
+          <td>${s.level}</td>
+          <td class="muted small">${new Date(s.date).toLocaleString()}</td>
+        </tr>
+      `).join("");
+
+      tableWrap.innerHTML = `
+        <table class="table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Имя</th>
+              <th>Очки</th>
+              <th>Уровень</th>
+              <th>Дата</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      `;
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+  </script>
+</body>
+</html>
