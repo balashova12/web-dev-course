@@ -2,6 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Задание 4</title>
 <link rel="stylesheet" href="src/css/styles.css" />
 </head>
@@ -11,8 +12,8 @@
 <div id="header"></div>
 <script>
     fetch("components/header.html")
-        .then(r => r.text())
-        .then(t => header.innerHTML = t);
+        .then(res => res.text())
+        .then(data => document.getElementById("header").innerHTML = data);
 </script>
 
 <main class="content">
