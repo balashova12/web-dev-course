@@ -91,7 +91,7 @@ body {
 }
 
 .card{
-  width: min(860px, calc(100% - 24px));
+  width: min(860px, calc(100% - 4px));
   margin: 18px auto;
   background: var(--panel);
   border-radius: 14px;
