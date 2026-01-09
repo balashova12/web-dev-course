@@ -1,36 +1,38 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Курсовая</title>
-<link rel="stylesheet" href="src/css/styles.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Курсовая</title>
+  <link rel="stylesheet" href="src/css/styles.css" />
 </head>
 
 <body>
 
-<div id="header"></div>
-<script>
+  <div id="header"></div>
+  <script>
     fetch("components/header.html")
-        .then(res => res.text())
-        .then(data => document.getElementById("header").innerHTML = data);
-</script>
+      .then(res => res.text())
+      .then(data => document.getElementById("header").innerHTML = data);
+  </script>
 
-<main class="content">
-<h1>Курсовая работа</h1>
-<p>Игровое приложение на JavaScript «Найди фигуру».</p>
+  <main class="content">
+    <h1>Курсовая работа</h1>
+    <p>Игровое приложение на JavaScript «Найди фигуру».</p>
 
-<a class="btn" href="Game_Balashova_FindFigure/index.html">
-  Запустить игру "Найти Фигуру"
-</a>
-</main>
+    <a class="btn" href="Game_Balashova_FindFigure/index.html">
+      Запустить игру "Найти Фигуру"
+    </a>
+  </main>
 
-<div id="footer"></div>
-<script>
+  <div id="footer"></div>
+  <script>
     fetch("components/footer.html")
-        .then(res => res.text())
-        .then(data => document.getElementById("footer").innerHTML = data);
-</script>
+      .then(res => res.text())
+      .then(data => document.getElementById("footer").innerHTML = data);
+  </script>
 
 </body>
+
 </html>

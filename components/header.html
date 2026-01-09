@@ -1,11 +1,54 @@
 <header class="header">
-    <div class="logo-chip"></div>
-    <nav class="menu">
-        <a href="./index.html">Главная</a>
-        <a href="./zadanie2.html">Задание 2</a>
-        <a href="./zadanie3.html">Задание 3</a>
-        <a href="./zadanie4.html">Задание 4</a>
-        <a href="./zadanie5.html">Задание 5</a>
-        <a href="./kursovaya.html">Курсовая</a>
-    </nav>
+  <div class="brand">
+    <a class="brand-link" href="index.html" aria-label="На главную">
+      <div class="logo-chip" aria-hidden="true"></div>
+      <span class="brand-text">IT Blog</span>
+    </a>
+  </div>
+
+  <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false">
+    ☰
+  </button>
+
+  <nav class="menu" aria-label="Навигация">
+    <a href="index.html">Главная</a>
+    <a href="zadanie2.html">Задание 2</a>
+    <a href="zadanie3.html">Задание 3</a>
+    <a href="zadanie4.html">Задание 4</a>
+    <a href="zadanie5.html">Задание 5</a>
+    <a href="kursovaya.html">Курсовая</a>
+  </nav>
+
+  <script>
+    (function () {
+      const header = document.currentScript.closest(".header");
+      const burger = header.querySelector(".burger");
+      const menu = header.querySelector(".menu");
+
+      function setExpanded(isOpen) {
+        burger.setAttribute("aria-expanded", String(isOpen));
+        menu.classList.toggle("open", isOpen);
+      }
+
+      burger.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const isOpen = menu.classList.contains("open");
+        setExpanded(!isOpen);
+      });
+
+      document.addEventListener("click", (e) => {
+        if (!menu.classList.contains("open")) return;
+        if (header.contains(e.target)) return;
+        setExpanded(false);
+      });
+
+      menu.addEventListener("click", (e) => {
+        if (e.target.closest("a")) setExpanded(false);
+      });
+
+      window.addEventListener("resize", () => {
+        if (window.innerWidth > 600) setExpanded(false);
+      });
+    })();
+  </script>
 </header>

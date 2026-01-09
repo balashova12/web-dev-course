@@ -1,58 +1,60 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Задание 4</title>
-<link rel="stylesheet" href="src/css/styles.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Задание 4</title>
+    <link rel="stylesheet" href="src/css/styles.css" />
 </head>
 
 <body>
 
-<div id="header"></div>
-<script>
-    fetch("components/header.html")
-        .then(res => res.text())
-        .then(data => document.getElementById("header").innerHTML = data);
-</script>
+    <div id="header"></div>
+    <script>
+        fetch("components/header.html")
+            .then(res => res.text())
+            .then(data => document.getElementById("header").innerHTML = data);
+    </script>
 
-<main class="content">
+    <main class="content">
 
-<h1>Задание 4 — Работа с массивами и таблицей</h1>
+        <h1>Задание 4 — Работа с массивами и таблицей</h1>
 
-<h2>Вывод случайных фраз</h2>
+        <h2>Вывод случайных фраз</h2>
 
-<div id="phrases-container"></div>
+        <div id="phrases-container"></div>
 
-<button id="showPhraseBtn">Показать фразу</button>
-<button id="makeBoldBtn">Перекрасить</button>
+        <button id="showPhraseBtn">Показать фразу</button>
+        <button id="makeBoldBtn">Перекрасить</button>
 
-<hr><br>
+        <hr><br>
 
-<h2>Таблица фраз</h2>
+        <h2>Таблица фраз</h2>
 
-<table id="phrasesTable" border="1" cellpadding="10">
-    <thead>
-        <tr>
-            <th>Латинский язык</th>
-            <th>Русский язык</th>
-        </tr>
-    </thead>
-    <tbody></tbody>
-</table>
+        <table id="phrasesTable" border="1" cellpadding="10">
+            <thead>
+                <tr>
+                    <th>Латинский язык</th>
+                    <th>Русский язык</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
 
-<br>
-<button id="addRowBtn">Создать</button>
+        <br>
+        <button id="addRowBtn">Создать</button>
 
-</main>
+    </main>
 
-<div id="footer"></div>
-<script>
-    fetch("components/footer.html")
-        .then(r => r.text())
-        .then(t => footer.innerHTML = t);
-</script>
+    <div id="footer"></div>
+    <script>
+        fetch("components/footer.html")
+            .then(r => r.text())
+            .then(t => footer.innerHTML = t);
+    </script>
 
-<script src="src/js/zadanie4.js"></script>
+    <script src="src/js/zadanie4.js"></script>
 </body>
+
 </html>

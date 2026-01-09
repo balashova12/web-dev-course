@@ -1,47 +1,49 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Задание 2</title>
-<link rel="stylesheet" href="src/css/styles.css" />
-<link rel="stylesheet" href="src/css/pic2.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Задание 2</title>
+    <link rel="stylesheet" href="src/css/styles.css" />
+    <link rel="stylesheet" href="src/css/pic2.css">
 </head>
 
 <body>
 
-<div id="header"></div>
-<script>
-    fetch("components/header.html")
-        .then(res => res.text())
-        .then(data => document.getElementById("header").innerHTML = data);
-</script>
+    <div id="header"></div>
+    <script>
+        fetch("components/header.html")
+            .then(res => res.text())
+            .then(data => document.getElementById("header").innerHTML = data);
+    </script>
 
-<main class="content">
-    <h1>Задание 2 - Вариант 4</h1>
-    <div class="picture">
-        <div class="arc arc1"></div>
-        <div class="arc arc2"></div>
-        <div class="arc arc3"></div>
+    <main class="content">
+        <h1>Задание 2 - Вариант 4</h1>
+        <div class="picture">
+            <div class="arc arc1"></div>
+            <div class="arc arc2"></div>
+            <div class="arc arc3"></div>
 
-        <div class="boat"></div>
-        <div class="mast"></div>
-        <div class="flag"></div>
-        <div class="sail"></div>
+            <div class="boat"></div>
+            <div class="mast"></div>
+            <div class="flag"></div>
+            <div class="sail"></div>
 
-        <div class="wave wave1"></div>
-        <div class="wave wave2"></div>
-        <div class="wave wave3"></div>
-        <div class="wave wave4"></div>    
-    </div>
-</main>
+            <div class="wave wave1"></div>
+            <div class="wave wave2"></div>
+            <div class="wave wave3"></div>
+            <div class="wave wave4"></div>
+        </div>
+    </main>
 
-<div id="footer"></div>
-<script>
-    fetch("components/footer.html")
-        .then(res => res.text())
-        .then(data => document.getElementById("footer").innerHTML = data);
-</script>
+    <div id="footer"></div>
+    <script>
+        fetch("components/footer.html")
+            .then(res => res.text())
+            .then(data => document.getElementById("footer").innerHTML = data);
+    </script>
 
 </body>
+
 </html>
