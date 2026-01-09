@@ -21,6 +21,7 @@ main {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
   padding: 15px 25px;
   background: #0d1117;
 }
@@ -134,43 +135,39 @@ main {
   margin-top: auto;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 600px){
 
-  .header {
-    flex-direction: row;
-    align-items: center;
-    padding: 10px 12px;
-  }
+  .burger{ display:block; }
 
-  .brand-link {
-    margin-right: auto;
-  }
+  .menu{
+    display:none;
+    position:absolute;
+    top: calc(100% + 8px);
+    right: 12px;
+    left: auto;
 
-  .burger {
-    display: block;
-    margin-left: auto;
-  }
+    width: 220px;
+    background:#0d1117;
+    border: 1px solid #222;
+    border-radius: 12px;
+    padding: 8px 0;
+    z-index: 9999;
 
-  .menu {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background: #0d1117;
     flex-direction: column;
     gap: 0;
   }
 
-  .menu.open {
-    display: flex;
+  .menu.open{ display:flex; }
+
+  .menu a{
+    margin:0;
+    padding: 12px 14px;
+    border: 0;
+    background: none;
+    text-align: left;
   }
 
-  .menu a {
-    margin: 0;
-    padding: 12px;
-    border-top: 1px solid #222;
-    font-size: 14px;
-    background: none;
+  .menu a:hover{
+    background: rgba(255,255,255,0.06);
   }
 }
