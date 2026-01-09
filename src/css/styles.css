@@ -135,25 +135,31 @@ main {
 }
 
 @media (max-width: 600px) {
+
   .header {
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     padding: 10px 12px;
-    gap: 10px;
-    text-align: center;
+  }
+
+  .brand-link {
+    margin-right: auto;
   }
 
   .burger {
     display: block;
+    margin-left: auto;
   }
 
   .menu {
     display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
     width: 100%;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 12px;
-    margin-top: 6px;
+    background: #0d1117;
+    flex-direction: column;
+    gap: 0;
   }
 
   .menu.open {
@@ -161,10 +167,10 @@ main {
   }
 
   .menu a {
-    margin-left: 0;
+    margin: 0;
+    padding: 12px;
+    border-top: 1px solid #222;
     font-size: 14px;
-    padding: 6px 10px;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.06);
+    background: none;
   }
 }
