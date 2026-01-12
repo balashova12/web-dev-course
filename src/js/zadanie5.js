@@ -11,7 +11,7 @@ const IDEAL = {
   roof:    { x:   0, y: -80, rot: 0 },
   chimney: { x:  60, y: -90, rot: 0 },
   window:  { x:  50, y:  40, rot: 0 },
-  door:    { x:  -15, y:  80, rot: 0 },
+  door:    { x: -15, y:  80, rot: 0 },
 };
 
 initScatter(true);
@@ -43,20 +43,23 @@ pieces.forEach(p => {
 });
 
 function rotatePiece(piece) {
-  const st = state.get(piece);
+  const st = state.get(piece) || { rot: 0 };
   st.rot = (st.rot + 90) % 360;
   state.set(piece, st);
   applyRotation(piece);
 }
 
 function applyRotation(piece) {
-  const st = state.get(piece);
+  const st = state.get(piece) || { rot: 0 };
   piece.style.setProperty("--rot", `${st.rot}deg`);
 }
 
 function makeDraggable(piece) {
   let dragging = false;
-  let offsetX = 0, offsetY = 0;
+
+  // смещение курсора относительно ЦЕНТРА фигуры
+  let grabDx = 0;
+  let grabDy = 0;
 
   piece.addEventListener("pointerdown", (e) => {
     if (isCompleted) return;
@@ -66,8 +69,12 @@ function makeDraggable(piece) {
     piece.style.zIndex = "100";
 
     const rect = piece.getBoundingClientRect();
-    offsetX = e.clientX - rect.left;
-    offsetY = e.clientY - rect.top;
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    // насколько курсор смещён от центра фигуры
+    grabDx = e.clientX - centerX;
+    grabDy = e.clientY - centerY;
   });
 
   piece.addEventListener("pointermove", (e) => {
@@ -75,27 +82,31 @@ function makeDraggable(piece) {
 
     const stageRect = stage.getBoundingClientRect();
 
-    const left = e.clientX - stageRect.left - offsetX;
-    const top  = e.clientY - stageRect.top  - offsetY;
+    // хотим поставить центр фигуры под курсор (с учетом grabDx/grabDy)
+    let cx = (e.clientX - stageRect.left) - grabDx;
+    let cy = (e.clientY - stageRect.top) - grabDy;
 
-    const pieceRect = piece.getBoundingClientRect();
-    const cx = left + pieceRect.width / 2;
-    const cy = top  + pieceRect.height / 2;
+    // размеры фигуры в текущем виде (учитывает поворот)
+    const r = piece.getBoundingClientRect();
+    const halfW = r.width / 2;
+    const halfH = r.height / 2;
+
+    // ограничение: фигура целиком внутри stage
+    cx = clamp(cx, halfW, stageRect.width - halfW);
+    cy = clamp(cy, halfH, stageRect.height - halfH);
 
     piece.style.left = `${cx}px`;
-    piece.style.top  = `${cy}px`;
+    piece.style.top = `${cy}px`;
   });
 
-  piece.addEventListener("pointerup", () => {
+  const endDrag = () => {
     if (!dragging) return;
     dragging = false;
     setZByType(piece);
-  });
+  };
 
-  piece.addEventListener("pointercancel", () => {
-    dragging = false;
-    setZByType(piece);
-  });
+  piece.addEventListener("pointerup", endDrag);
+  piece.addEventListener("pointercancel", endDrag);
 }
 
 function setZByType(piece) {
@@ -106,7 +117,6 @@ function setZByType(piece) {
 
 function initScatter(firstTime) {
   const rect = stage.getBoundingClientRect();
-
   const cx = rect.width / 2;
   const cy = rect.height / 2;
 
@@ -115,7 +125,7 @@ function initScatter(firstTime) {
     const y = cy + rand(-120, 120);
 
     p.style.left = `${x}px`;
-    p.style.top  = `${y}px`;
+    p.style.top = `${y}px`;
 
     const randomRot = [0, 90, 180, 270][Math.floor(Math.random() * 4)];
     state.set(p, { rot: randomRot });
@@ -147,7 +157,7 @@ function snapToIdeal() {
     if (!target) return;
 
     p.style.left = `${centerX + target.x}px`;
-    p.style.top  = `${centerY + target.y}px`;
+    p.style.top = `${centerY + target.y}px`;
 
     state.set(p, { rot: target.rot });
     applyRotation(p);
@@ -157,6 +167,10 @@ function snapToIdeal() {
 
 function rand(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function clamp(v, min, max) {
+  return Math.max(min, Math.min(max, v));
 }
 
 window.addEventListener("resize", () => {

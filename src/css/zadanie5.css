@@ -70,7 +70,7 @@
   cursor: grab;
 
   transform: translate(-50%, -50%) rotate(var(--rot, 0deg));
-  transition: left .55s ease, top .55s ease, transform .55s ease, box-shadow .15s;
+  transition: transform .55s ease, box-shadow .15s;
 
   box-shadow: 0 8px 18px rgba(0,0,0,0.12);
 }
