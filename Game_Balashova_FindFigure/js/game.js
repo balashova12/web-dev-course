@@ -20,7 +20,9 @@ const toast = document.getElementById("toast");
 
 const params = new URLSearchParams(location.search);
 let level = Number(params.get("level") || 1);
-if (![1,2,3].includes(level)) level = 1;
+if (![1, 2, 3].includes(level)) level = 1;
+
+const TEST_MODE = params.get("test") === "1";
 
 const name = getPlayerName().trim() || "Игрок";
 playerLine.textContent = `Игрок: ${name}`;
@@ -33,9 +35,22 @@ let remaining = 0;
 let currentQ = null;
 let answered = false;
 let qPool = [];
-let speedClass = "";
+let attemptsLeft = 2;
+let firstTryAvailable = true;
 
-const cfg = LEVELS[level];
+function getCfg() {
+  const base = LEVELS[level];
+  return {
+    ...base,
+    points: { ...base.points },
+    rounds: TEST_MODE ? 1 : base.rounds
+  };
+}
+
+let cfg = getCfg();
+
+if (TEST_MODE) cfg.rounds = 1;
+
 levelView.textContent = String(level);
 roundTotal.textContent = String(cfg.rounds);
 ruleText.textContent = cfg.rule;
@@ -43,9 +58,18 @@ ruleText.textContent = cfg.rule;
 startLevel();
 
 quitBtn.addEventListener("click", () => finishGame(false));
-nextBtn.addEventListener("click", () => nextRound());
-
 restartBtn.addEventListener("click", () => restartLevel());
+
+nextBtn.addEventListener("click", () => {
+  if (!answered) return;
+  if (TEST_MODE) {
+    const nextLevel = level + 1;
+    if (nextLevel <= 3) location.href = `./game.html?level=${nextLevel}&test=1`;
+    else finishGame(true);
+    return;
+  }
+  nextRound();
+});
 
 function restartLevel() {
   clearInterval(timerId);
@@ -53,13 +77,18 @@ function restartLevel() {
   round = 0;
   correct = 0;
   scoreView.textContent = String(score);
-  toast.className = "toast hidden";
+  hideToast();
+  cfg = getCfg();
+  roundTotal.textContent = String(cfg.rounds);
+  ruleText.textContent = cfg.rule;
   startLevel();
 }
 
 function startLevel() {
+  arena.classList.remove("level-1", "level-2", "level-3");
+  arena.classList.add(`level-${level}`);
+
   qPool = shuffle(buildQuestions()).slice(0, cfg.rounds);
-  speedClass = level >= 2 ? "fast" : "";
   nextRound();
 }
 
@@ -74,6 +103,9 @@ function nextRound() {
   currentQ = qPool[round - 1];
   questionText.textContent = currentQ.text;
 
+  attemptsLeft = 2;
+  firstTryAvailable = true;
+
   renderRound();
   startTimer();
   hideToast();
@@ -82,8 +114,7 @@ function nextRound() {
 
 function startTimer() {
   clearInterval(timerId);
-  remaining = cfg.timeSec - Math.max(0, round - 1) * (level === 3 ? 1 : 0);
-  if (remaining < 6) remaining = 6;
+  remaining = cfg.timeSec;
   timeView.textContent = String(remaining);
 
   timerId = setInterval(() => {
@@ -91,7 +122,10 @@ function startTimer() {
     timeView.textContent = String(remaining);
     if (remaining <= 0) {
       clearInterval(timerId);
-      onWrong("Время вышло");
+      lockRound();
+      revealCorrect(null);
+      showToast("Время вышло", false);
+      nextBtn.classList.remove("hidden");
     }
   }, 1000);
 }
@@ -101,41 +135,40 @@ function renderRound() {
   dropZone.classList.add("hidden");
   answered = false;
 
-  const shapes = shuffle(SHAPES).slice(0, 4);
-  const extras = shuffle(SHAPES).slice(0, 2);
-  const all = shuffle([...shapes, ...extras]);
+  const base = shuffle(SHAPES);
+  const all = shuffle([...base, ...shuffle(SHAPES).slice(0, 2)]);
+  const placed = [];
 
-  const arenaRect = arena.getBoundingClientRect();
-  const w = arenaRect.width;
-  const h = arenaRect.height;
+  const w = arena.clientWidth;
+  const h = arena.clientHeight;
 
-  all.forEach((s, i) => {
+  all.forEach((s) => {
     const el = document.createElement("div");
-    el.className = `shape ${s.cls} ${speedClass}`;
+    el.className = `shape ${s.cls}`;
     el.dataset.shape = s.id;
 
     if (s.cls !== "triangle" && s.cls !== "star") {
       el.style.background = s.color;
-      el.textContent = s.label[0];
     } else {
       const span = document.createElement("span");
-      span.textContent = s.label[0];
       el.appendChild(span);
     }
 
-    const pos = randomPos(w, h, s.cls);
+    const pos = randomPosNoOverlap(w, h, s.cls, placed);
     el.style.left = `${pos.x}px`;
     el.style.top = `${pos.y}px`;
+    placed.push(pos.rect);
+
+    if (level === 3) {
+      el.style.setProperty("--dx", `${rand(-24, 24)}px`);
+      el.style.setProperty("--dy", `${rand(-18, 18)}px`);
+      el.style.setProperty("--driftDur", `${rand(7, 12)}s`);
+    }
 
     if (cfg.mechanic === "hover") {
       el.addEventListener("mouseenter", () => {
         if (answered) return;
-        checkAnswer(el.dataset.shape);
-      }, { once: false });
-
-      el.addEventListener("pointerdown", () => {
-        if (answered) return;
-        onWrong("Не то действие");
+        handlePick(el);
       });
     }
 
@@ -143,13 +176,7 @@ function renderRound() {
       el.addEventListener("dblclick", (e) => {
         e.preventDefault();
         if (answered) return;
-        checkAnswer(el.dataset.shape);
-      });
-
-      el.addEventListener("mouseenter", () => {
-        if (answered) return;
-        el.classList.add("shake");
-        setTimeout(() => el.classList.remove("shake"), 180);
+        handlePick(el);
       });
     }
 
@@ -163,10 +190,75 @@ function renderRound() {
   });
 }
 
+function handlePick(el) {
+  if (answered) return;
+
+  const picked = el.dataset.shape;
+  const isOk = picked === currentQ.answer;
+
+  if (isOk) {
+    lockRound();
+    highlightPicked(el, true);
+    confettiBurst();
+    const bonus = firstTryAvailable ? cfg.points.bonusFirstTry : 0;
+    score += cfg.points.ok + bonus;
+    correct++;
+    scoreView.textContent = String(score);
+    showToast(bonus ? `Верно! +${cfg.points.ok} +${bonus}` : `Верно! +${cfg.points.ok}`, true);
+    answered = true;
+    clearInterval(timerId);
+    nextBtn.classList.remove("hidden");
+    return;
+  }
+
+  highlightPicked(el, false);
+  revealCorrect(el);
+
+  attemptsLeft--;
+  firstTryAvailable = false;
+
+  if (attemptsLeft > 0) {
+    showToast("Неверно. Есть ещё одна попытка", false);
+    return;
+  }
+
+  lockRound();
+  score += cfg.points.bad;
+  scoreView.textContent = String(score);
+  showToast(`Неверно. ${cfg.points.bad}`, false);
+  answered = true;
+  clearInterval(timerId);
+  nextBtn.classList.remove("hidden");
+}
+
+function highlightPicked(el, ok) {
+  clearHighlights();
+  el.classList.add(ok ? "selected-ok" : "selected-bad");
+}
+
+function revealCorrect(exceptEl) {
+  const correctEl = arena.querySelector(`.shape[data-shape="${currentQ.answer}"]`);
+  if (!correctEl) return;
+  if (exceptEl && correctEl === exceptEl) return;
+  correctEl.classList.add("correct");
+}
+
+function clearHighlights() {
+  arena.querySelectorAll(".shape").forEach(s => {
+    s.classList.remove("selected-ok", "selected-bad", "correct");
+  });
+}
+
+function lockRound() {
+  arena.querySelectorAll(".shape").forEach(s => {
+    s.style.pointerEvents = "none";
+  });
+}
+
 function makeDraggable(el) {
   let dragging = false;
   let offsetX = 0, offsetY = 0;
-  let stageLeft = 0, stageTop = 0;
+  let arenaLeft = 0, arenaTop = 0;
 
   let nextX = 0, nextY = 0;
   let rafId = 0;
@@ -189,16 +281,16 @@ function makeDraggable(el) {
     offsetY = e.clientY - rect.top;
 
     const a = arena.getBoundingClientRect();
-    stageLeft = a.left;
-    stageTop = a.top;
+    arenaLeft = a.left;
+    arenaTop = a.top;
   });
 
   el.addEventListener("pointermove", (e) => {
     if (!dragging || answered) return;
 
     const rect = el.getBoundingClientRect();
-    const left = e.clientX - stageLeft - offsetX;
-    const top  = e.clientY - stageTop  - offsetY;
+    const left = e.clientX - arenaLeft - offsetX;
+    const top  = e.clientY - arenaTop  - offsetY;
 
     nextX = left + rect.width / 2;
     nextY = top + rect.height / 2;
@@ -213,10 +305,10 @@ function makeDraggable(el) {
     el.style.cursor = "grab";
     el.style.zIndex = "";
 
-    const ok = isInsideDropZone(el);
-    if (!ok) return onWrong("Перетащи в зону");
+    const okDrop = isInsideDropZone(el);
+    if (!okDrop) return;
 
-    checkAnswer(el.dataset.shape);
+    handlePick(el);
   });
 
   el.addEventListener("pointercancel", () => {
@@ -233,31 +325,6 @@ function isInsideDropZone(el) {
   const cx = (r.left + r.right) / 2;
   const cy = (r.top + r.bottom) / 2;
   return cx >= dz.left && cx <= dz.right && cy >= dz.top && cy <= dz.bottom;
-}
-
-function checkAnswer(shapeId) {
-  if (shapeId === currentQ.answer) onCorrect();
-  else onWrong("Неверно");
-}
-
-function onCorrect() {
-  answered = true;
-  clearInterval(timerId);
-  correct++;
-  score += cfg.points.ok;
-  scoreView.textContent = String(score);
-  showToast(`Верно! +${cfg.points.ok}`, true);
-  nextBtn.classList.remove("hidden");
-}
-
-function onWrong(reason) {
-  if (answered) return;
-  answered = true;
-  clearInterval(timerId);
-  score += cfg.points.bad;
-  scoreView.textContent = String(score);
-  showToast(`${reason}. ${cfg.points.bad}`, false);
-  nextBtn.classList.remove("hidden");
 }
 
 function finishLevel() {
@@ -306,6 +373,29 @@ function hideToast() {
   toast.className = "toast hidden";
 }
 
+function confettiBurst() {
+  const cx = window.innerWidth * 0.5;
+  const cy = 100;
+
+  for (let i = 0; i < 40; i++) {
+    const c = document.createElement("div");
+    c.className = "confetti";
+    const x = cx + rand(-40, 40);
+    const y = cy + rand(-10, 10);
+
+    c.style.setProperty("--x", `${x}px`);
+    c.style.setProperty("--y", `${y}px`);
+    c.style.setProperty("--vx", `${rand(-140, 140)}px`);
+    c.style.setProperty("--vy", `${rand(220, 420)}px`);
+    c.style.background = `hsl(${rand(0, 360)} 90% 60%)`;
+    c.style.borderRadius = `${rand(0, 6)}px`;
+    c.style.transform = `translate(${x}px, ${y}px)`;
+
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 1000);
+  }
+}
+
 function shuffle(arr) {
   const a = arr.slice();
   for (let i = a.length - 1; i > 0; i--) {
@@ -315,13 +405,40 @@ function shuffle(arr) {
   return a;
 }
 
-function randomPos(w, h, kind) {
-  const pad = 18;
+function sizeByKind(kind) {
   let bw = 80, bh = 80;
   if (kind === "triangle") { bw = 100; bh = 90; }
   if (kind === "star") { bw = 90; bh = 80; }
+  return { bw, bh };
+}
+
+function randomPosNoOverlap(w, h, kind, placed) {
+  const pad = 18;
+  const { bw, bh } = sizeByKind(kind);
+
+  for (let t = 0; t < 120; t++) {
+    const x = pad + Math.random() * (w - bw - pad * 2);
+    const y = pad + Math.random() * (h - bh - pad * 2);
+
+    const rect = { x, y, w: bw, h: bh };
+
+    const hit = placed.some(r => !(
+      rect.x + rect.w + 10 < r.x ||
+      rect.x > r.x + r.w + 10 ||
+      rect.y + rect.h + 10 < r.y ||
+      rect.y > r.y + r.h + 10
+    ));
+
+    if (!hit) {
+      return { x, y, rect };
+    }
+  }
 
   const x = pad + Math.random() * (w - bw - pad * 2);
   const y = pad + Math.random() * (h - bh - pad * 2);
-  return { x, y };
+  return { x, y, rect: { x, y, w: bw, h: bh } };
+}
+
+function rand(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }

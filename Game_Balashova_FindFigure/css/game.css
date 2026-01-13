@@ -102,7 +102,7 @@ body {
 h1{ margin: 0 0 10px; font-size: 32px; }
 h2{ margin: 16px 0 10px; font-size: 22px; }
 .muted{ color: var(--muted); }
-.small{ font-size: 12px; }
+.small{ font-size: 16px; }
 
 .form{ display:flex; gap:10px; align-items:end; flex-wrap:wrap; }
 .label{ font-size: 12px; color: var(--muted); font-weight:700; }
@@ -339,4 +339,65 @@ h2{ margin: 16px 0 10px; font-size: 22px; }
 @media (max-width: 900px){
   .game{ grid-template-columns: 1fr; }
   .arena{ height: 360px; }
+}
+
+.shape{
+  outline: 0 solid transparent;
+  outline-offset: 3px;
+}
+
+.shape.selected-ok{
+  outline: 4px solid #22c55e;
+}
+
+.shape.selected-bad{
+  outline: 4px solid #ef4444;
+}
+
+.shape.correct{
+  outline: 4px solid #22c55e;
+}
+
+.level-1 .shape{
+  animation: breathe 2.6s ease-in-out infinite;
+}
+
+@keyframes breathe{
+  0%,100%{ transform: scale(1); }
+  50%{ transform: scale(1.02); }
+}
+
+.level-2 .shape{
+  animation: fadepop 1.8s ease-in-out infinite;
+}
+
+@keyframes fadepop{
+  0%,100%{ opacity: .25; transform: scale(.98); }
+  50%{ opacity: 1; transform: scale(1); }
+}
+
+.level-3 .shape{
+  animation: drift var(--driftDur, 9s) ease-in-out infinite alternate;
+}
+
+@keyframes drift{
+  0%{ transform: translate(0,0); }
+  100%{ transform: translate(var(--dx, 24px), var(--dy, 18px)); }
+}
+
+.confetti{
+  position: fixed;
+  width: 10px;
+  height: 14px;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-9999px, -9999px);
+  animation: confetti-fall 900ms ease-out forwards;
+}
+
+@keyframes confetti-fall{
+  0%{ opacity: 1; transform: translate(var(--x), var(--y)) rotate(0deg); }
+  100%{ opacity: 0; transform: translate(calc(var(--x) + var(--vx)), calc(var(--y) + var(--vy))) rotate(360deg); }
 }
