@@ -57,7 +57,6 @@ function applyRotation(piece) {
 function makeDraggable(piece) {
   let dragging = false;
 
-  // смещение курсора относительно ЦЕНТРА фигуры
   let grabDx = 0;
   let grabDy = 0;
 
@@ -72,7 +71,6 @@ function makeDraggable(piece) {
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
 
-    // насколько курсор смещён от центра фигуры
     grabDx = e.clientX - centerX;
     grabDy = e.clientY - centerY;
   });
@@ -82,16 +80,13 @@ function makeDraggable(piece) {
 
     const stageRect = stage.getBoundingClientRect();
 
-    // хотим поставить центр фигуры под курсор (с учетом grabDx/grabDy)
     let cx = (e.clientX - stageRect.left) - grabDx;
     let cy = (e.clientY - stageRect.top) - grabDy;
 
-    // размеры фигуры в текущем виде (учитывает поворот)
     const r = piece.getBoundingClientRect();
     const halfW = r.width / 2;
     const halfH = r.height / 2;
 
-    // ограничение: фигура целиком внутри stage
     cx = clamp(cx, halfW, stageRect.width - halfW);
     cy = clamp(cy, halfH, stageRect.height - halfH);
 
