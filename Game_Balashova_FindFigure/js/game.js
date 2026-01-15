@@ -163,9 +163,9 @@ if (!arena || !dropZone) {
       placed.push(pos.rect);
 
       if (level === 3) {
-        el.style.setProperty("--dx", `${rand(-24, 24)}px`);
-        el.style.setProperty("--dy", `${rand(-18, 18)}px`);
-        el.style.setProperty("--driftDur", `${rand(7, 12)}s`);
+        el.style.setProperty("--dx", `${rand(-60, 60)}px`);
+        el.style.setProperty("--dy", `${rand(-45, 45)}px`);
+        el.style.setProperty("--driftDur", `${rand(1, 2)}s`);
       }
 
       if (cfg.mechanic === "hover") {
