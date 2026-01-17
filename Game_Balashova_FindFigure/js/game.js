@@ -49,7 +49,6 @@ if (!arena || !dropZone) {
     let targetsTotal = 0;
     let targetsFound = 0;
 
-    // NEW: очки, заработанные за текущий раунд
     let roundScore = 0;
 
     const BONUS_SEC_PER_CORRECT_PICK = 2;
@@ -129,7 +128,6 @@ if (!arena || !dropZone) {
       targetsTotal = 0;
       targetsFound = 0;
 
-      // NEW: сброс счётчика очков раунда
       roundScore = 0;
 
       renderRound();
@@ -152,7 +150,6 @@ if (!arena || !dropZone) {
           lockRound();
           revealAllCorrect();
 
-          // (опционально) показываем очки раунда и при таймауте
           const sign = roundScore > 0 ? "+" : "";
           showToast(`Время вышло. Очки за раунд: ${sign}${roundScore}`, false);
 
@@ -252,7 +249,7 @@ if (!arena || !dropZone) {
         lockRound();
 
         score += cfg.points.bad;
-        roundScore += cfg.points.bad; // NEW
+        roundScore += cfg.points.bad; 
         scoreView.textContent = String(score);
 
         const sign = roundScore > 0 ? "+" : "";
@@ -269,7 +266,7 @@ if (!arena || !dropZone) {
       targetsFound++;
 
       score += cfg.points.ok;
-      roundScore += cfg.points.ok; // NEW
+      roundScore += cfg.points.ok; 
       scoreView.textContent = String(score);
 
       if (BONUS_SEC_PER_CORRECT_PICK > 0) {
