@@ -2,22 +2,22 @@ const KEY_PLAYER = "ff_playerName";
 const KEY_SCORES = "ff_scores";
 const KEY_CURRENT = "ff_currentGame";
 
-export function setPlayerName(name) {
+window.setPlayerName = function(name) {
   localStorage.setItem(KEY_PLAYER, name);
 }
 
-export function getPlayerName() {
+window.getPlayerName = function() {
   return localStorage.getItem(KEY_PLAYER) || "";
 }
 
-export function addScoreEntry(entry) {
+window.addScoreEntry = function(entry) {
   const list = getScores();
   list.unshift(entry);
   list.sort((a, b) => b.score - a.score);
   localStorage.setItem(KEY_SCORES, JSON.stringify(list));
 }
 
-export function getScores() {
+window.getScores = function() {
   try {
     const raw = localStorage.getItem(KEY_SCORES);
     const list = raw ? JSON.parse(raw) : [];
@@ -27,11 +27,11 @@ export function getScores() {
   }
 }
 
-export function setCurrentGame(data) {
+window.setCurrentGame = function(data) {
   localStorage.setItem(KEY_CURRENT, JSON.stringify(data));
 }
 
-export function getCurrentGame() {
+window.getCurrentGame = function() {
   try {
     const raw = localStorage.getItem(KEY_CURRENT);
     return raw ? JSON.parse(raw) : null;
@@ -40,6 +40,6 @@ export function getCurrentGame() {
   }
 }
 
-export function clearCurrentGame() {
+window.clearCurrentGame = function() {
   localStorage.removeItem(KEY_CURRENT);
 }

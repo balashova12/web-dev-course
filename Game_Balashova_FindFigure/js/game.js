@@ -1,6 +1,3 @@
-import { LEVELS, SHAPES, buildQuestions } from "./data.js";
-import { getPlayerName, addScoreEntry, setCurrentGame } from "./storage.js";
-
 const arena = document.getElementById("arena");
 const dropZone = document.getElementById("dropZone");
 
@@ -34,7 +31,7 @@ if (!arena || !dropZone) {
 
     const TEST_MODE = params.get("test") === "1";
 
-    const name = (getPlayerName() || "").trim() || "Игрок";
+    const name = (window.getPlayerName() || "").trim() || "Игрок";
     playerLine.textContent = `Игрок: ${name}`;
 
     let score = 0;
@@ -54,7 +51,7 @@ if (!arena || !dropZone) {
     const BONUS_SEC_PER_CORRECT_PICK = 2;
 
     function getCfg() {
-      const base = LEVELS[level];
+      const base = window.LEVELS[level];
       return {
         ...base,
         points: { ...base.points },
@@ -110,7 +107,7 @@ if (!arena || !dropZone) {
       arena.classList.remove("level-1", "level-2", "level-3");
       arena.classList.add(`level-${level}`);
 
-      qPool = shuffle(buildQuestions()).slice(0, cfg.rounds);
+      qPool = shuffle(window.buildQuestions()).slice(0, cfg.rounds);
       nextRound();
     }
 
@@ -164,8 +161,8 @@ if (!arena || !dropZone) {
       dropZone.classList.add("hidden");
       answered = false;
 
-      const base = shuffle(SHAPES);
-      const all = shuffle([...base, ...shuffle(SHAPES).slice(0, 2)]);
+      const base = shuffle(window.SHAPES);
+      const all = shuffle([...base, ...shuffle(window.SHAPES).slice(0, 2)]);
       const placed = [];
 
       const w = arena.clientWidth;
@@ -411,9 +408,9 @@ if (!arena || !dropZone) {
         passed,
       };
 
-      setCurrentGame(result);
+      window.setCurrentGame(result);
 
-      addScoreEntry({
+      window.addScoreEntry({
         name,
         score,
         level,

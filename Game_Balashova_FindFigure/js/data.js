@@ -1,4 +1,4 @@
-export const LEVELS = {
+window.LEVELS = {
   1: {
     title: "Уровень 1 — Наведение",
     rule: "Наведи курсор на все подходящие фигуры. За каждую правильную фигуру начисляются очки и добавляется немного времени. Ошибка завершает раунд.",
@@ -25,14 +25,14 @@ export const LEVELS = {
   },
 };
 
-export const SHAPES = [
+window.SHAPES = [
   { id: "circle",   label: "Круг",       cls: "circle",   color: "#9de7f2" },
   { id: "square",   label: "Квадрат",    cls: "square",   color: "#ff6b6b" },
   { id: "triangle", label: "Треугольник",cls: "triangle", color: "#8b5a2b" },
   { id: "star",     label: "Звезда",     cls: "star",     color: "#f59e0b" },
 ];
 
-export function buildQuestions() {
+window.buildQuestions = function () {
   return [
     { id: "q1", text: "Найди круг",              answer: "circle" },
     { id: "q2", text: "Найди квадрат",           answer: "square" },

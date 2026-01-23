@@ -42,13 +42,14 @@
     </footer>
   </div>
 
-  <script type="module">
-    import { getScores, getCurrentGame, clearCurrentGame } from "./js/storage.js";
+  <script src="./js/storage.js"></script>
 
+  <script>
     const summary = document.getElementById("summary");
     const tableWrap = document.getElementById("tableWrap");
 
-    const cur = getCurrentGame();
+    const cur = window.getCurrentGame ? window.getCurrentGame() : null;
+
     if (cur) {
       summary.innerHTML = `
         <div class="pill ${cur.passed ? "ok" : "bad"}">
@@ -61,12 +62,13 @@
           <div><div class="label">Правильных ответов</div><div class="value">${cur.correct}/${cur.rounds}</div></div>
         </div>
       `;
-      clearCurrentGame();
+      if (window.clearCurrentGame) window.clearCurrentGame();
     } else {
       summary.innerHTML = `<div class="muted">Нет свежего результата. Запусти игру.</div>`;
     }
 
-    const scores = getScores().slice(0, 10);
+    const scores = window.getScores ? window.getScores().slice(0, 10) : [];
+
     if (!scores.length) {
       tableWrap.innerHTML = `<div class="muted">Пока нет результатов.</div>`;
     } else {

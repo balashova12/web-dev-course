@@ -59,9 +59,9 @@
     </footer>
   </div>
 
-  <script type="module">
-    import { setPlayerName } from "./js/storage.js";
+  <script src="./js/storage.js"></script>
 
+  <script>
     const nameInput = document.getElementById("name");
     const startBtn = document.getElementById("startBtn");
     const quickBtn = document.getElementById("quickBtn");
@@ -75,7 +75,8 @@
         setTimeout(() => nameInput.classList.remove("shake"), 250);
         return;
       }
-      setPlayerName(name);
+
+      window.setPlayerName(name);
       location.href = `./game.html?level=${level}`;
     }
 
